@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Position__c</fullName>
+    <description>Crew member position on the yacht</description>
+    <externalId>false</externalId>
+    <label>Position</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Captain</fullName>
+                <default>false</default>
+                <label>Captain</label>
+            </value>
+            <value>
+                <fullName>First Mate</fullName>
+                <default>false</default>
+                <label>First Mate</label>
+            </value>
+            <value>
+                <fullName>Engineer</fullName>
+                <default>false</default>
+                <label>Engineer</label>
+            </value>
+            <value>
+                <fullName>Chef</fullName>
+                <default>false</default>
+                <label>Chef</label>
+            </value>
+            <value>
+                <fullName>Steward</fullName>
+                <default>false</default>
+                <label>Steward</label>
+            </value>
+            <value>
+                <fullName>Deck Hand</fullName>
+                <default>false</default>
+                <label>Deck Hand</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

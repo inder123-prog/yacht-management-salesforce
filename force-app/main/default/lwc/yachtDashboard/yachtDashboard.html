@@ -1,0 +1,43 @@
+<template>
+    <lightning-card title="Yacht Management Dashboard" icon-name="custom:custom63">
+        <div class="slds-p-horizontal_medium">
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading dashboard..."></lightning-spinner>
+            </template>
+
+            <template if:false={isLoading}>
+                <div class="slds-grid slds-wrap slds-gutters_medium">
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                        <lightning-card>
+                            <div class="slds-p-medium slds-text-align_center">
+                                <lightning-icon icon-name="utility:currency" size="large"></lightning-icon>
+                                <div class="metric-value">${totalExpenses}</div>
+                                <div class="metric-label">Total Monthly Expenses</div>
+                            </div>
+                        </lightning-card>
+                    </div>
+                    
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                        <lightning-card>
+                            <div class="slds-p-medium slds-text-align_center">
+                                <lightning-icon icon-name="utility:wrench" size="large"></lightning-icon>
+                                <div class="metric-value">{pendingMaintenance}</div>
+                                <div class="metric-label">Pending Maintenance</div>
+                            </div>
+                        </lightning-card>
+                    </div>
+                    
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                        <lightning-card>
+                            <div class="slds-p-medium slds-text-align_center">
+                                <lightning-icon icon-name="custom:custom63" size="large"></lightning-icon>
+                                <div class="metric-value">{activeYachts}</div>
+                                <div class="metric-label">Active Yachts</div>
+                            </div>
+                        </lightning-card>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

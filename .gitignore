@@ -1,0 +1,24 @@
+# Salesforce cache
+.sf/
+.sfdx/
+.localdevserver/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Dependency directories
+node_modules/
+
+# Environment variables
+.env
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# JWT Key files
+server.key
+*.key

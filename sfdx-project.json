@@ -1,0 +1,15 @@
+{
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true,
+      "package": "YachtManagement",
+      "versionName": "ver 0.1",
+      "versionNumber": "0.1.0.NEXT"
+    }
+  ],
+  "name": "yacht-management-salesforce",
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "59.0"
+}

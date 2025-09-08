@@ -1,0 +1,285 @@
+<template>
+    <lightning-card title="Payment Processing" icon-name="utility:payment_gateway">
+        <div class="slds-p-horizontal_medium">
+            
+            <!-- Payment Amount Display -->
+            <div class="payment-header slds-text-align_center slds-p-vertical_large">
+                <h2 class="slds-text-heading_large">{formattedAmount}</h2>
+                <p class="slds-text-body_regular">Invoice: {invoiceNumber}</p>
+            </div>
+
+            <!-- Payment Method Selection -->
+            <template if:false={showPaymentForm}>
+                <div class="payment-methods">
+                    <h3 class="slds-text-heading_medium slds-p-bottom_medium">Select Payment Method</h3>
+                    
+                    <template for:each={paymentMethods} for:item="method">
+                        <div key={method.value} class="payment-method-card slds-box slds-m-bottom_small" 
+                             data-method={method.value} onclick={handlePaymentMethodSelect}>
+                            <div class="slds-media">
+                                <div class="slds-media__figure">
+                                    <lightning-icon icon-name={method.icon} size="medium" variant="brand"></lightning-icon>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h4 class="slds-text-heading_small">{method.label}</h4>
+                                    <p class="slds-text-body_small slds-text-color_weak">{method.description}</p>
+                                    <p class="slds-text-body_small fee-text">{method.fee}</p>
+                                </div>
+                                <div class="slds-media__figure slds-media__figure_reverse">
+                                    <lightning-icon icon-name="utility:chevronright" size="small"></lightning-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+
+            <!-- Wire Transfer Form -->
+            <template if:true={isWireTransfer}>
+                <template if:true={showPaymentForm}>
+                    <div class="payment-form">
+                        <div class="slds-grid slds-gutters_small slds-p-bottom_medium">
+                            <div class="slds-col slds-size_1-of-12">
+                                <lightning-button-icon 
+                                    icon-name="utility:back" 
+                                    onclick={handleBackToMethods}
+                                    variant="border-filled"
+                                    alternative-text="Back">
+                                </lightning-button-icon>
+                            </div>
+                            <div class="slds-col slds-size_11-of-12">
+                                <h3 class="slds-text-heading_medium">Wire Transfer Instructions</h3>
+                            </div>
+                        </div>
+
+                        <div class="wire-transfer-details slds-box slds-m-vertical_medium">
+                            <div class="slds-grid slds-wrap slds-gutters_small">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <div class="detail-item">
+                                        <label class="slds-form-element__label">Bank Name</label>
+                                        <div class="detail-value">{wireTransferInfo.bankName}</div>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <div class="detail-item">
+                                        <label class="slds-form-element__label">Routing Number</label>
+                                        <div class="detail-value">
+                                            {wireTransferInfo.routingNumber}
+                                            <lightning-button-icon 
+                                                icon-name="utility:copy" 
+                                                data-copy={wireTransferInfo.routingNumber}
+                                                onclick={copyToClipboard}
+                                                variant="bare"
+                                                size="small">
+                                            </lightning-button-icon>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <div class="detail-item">
+                                        <label class="slds-form-element__label">Payment Reference</label>
+                                        <div class="detail-value reference-highlight">
+                                            {wireTransferInfo.reference}
+                                            <lightning-button-icon 
+                                                icon-name="utility:copy" 
+                                                data-copy={wireTransferInfo.reference}
+                                                onclick={copyToClipboard}
+                                                variant="bare"
+                                                size="small">
+                                            </lightning-button-icon>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <div class="detail-item">
+                                        <label class="slds-form-element__label">SWIFT Code</label>
+                                        <div class="detail-value">
+                                            {wireTransferInfo.swiftCode}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="slds-notify slds-notify_alert slds-theme_warning slds-m-bottom_medium">
+                            <span class="slds-assistive-text">Warning</span>
+                            <h2>Important: Include the payment reference "{wireTransferInfo.reference}" in your wire transfer to ensure proper processing.</h2>
+                        </div>
+
+                        <div class="slds-text-align_center">
+                            <lightning-button 
+                                label="Confirm Wire Transfer Sent" 
+                                variant="brand"
+                                onclick={handleWireTransferConfirm}
+                                disabled={isProcessing}>
+                            </lightning-button>
+                        </div>
+                    </div>
+                </template>
+            </template>
+
+            <!-- Credit Card Form -->
+            <template if:true={isCreditCard}>
+                <template if:true={showPaymentForm}>
+                    <div class="payment-form">
+                        <div class="slds-grid slds-gutters_small slds-p-bottom_medium">
+                            <div class="slds-col slds-size_1-of-12">
+                                <lightning-button-icon 
+                                    icon-name="utility:back" 
+                                    onclick={handleBackToMethods}
+                                    variant="border-filled">
+                                </lightning-button-icon>
+                            </div>
+                            <div class="slds-col slds-size_11-of-12">
+                                <h3 class="slds-text-heading_medium">Credit Card Payment</h3>
+                            </div>
+                        </div>
+
+                        <div class="credit-card-form slds-box slds-m-vertical_medium">
+                            <lightning-input 
+                                label="Card Number" 
+                                type="text" 
+                                placeholder="1234 5678 9012 3456"
+                                class="slds-m-bottom_small"
+                                required>
+                            </lightning-input>
+                            <div class="slds-grid slds-gutters_small">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input 
+                                        label="Expiry Date" 
+                                        type="text" 
+                                        placeholder="MM/YY"
+                                        required>
+                                    </lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input 
+                                        label="CVV" 
+                                        type="text" 
+                                        placeholder="123"
+                                        required>
+                                    </lightning-input>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="slds-text-align_center">
+                            <lightning-button 
+                                label="Process Payment" 
+                                variant="brand"
+                                onclick={handleStripePayment}
+                                disabled={isProcessing}>
+                            </lightning-button>
+                        </div>
+                    </div>
+                </template>
+            </template>
+
+            <!-- PayPal Form -->
+            <template if:true={isPayPal}>
+                <template if:true={showPaymentForm}>
+                    <div class="payment-form">
+                        <div class="slds-grid slds-gutters_small slds-p-bottom_medium">
+                            <div class="slds-col slds-size_1-of-12">
+                                <lightning-button-icon 
+                                    icon-name="utility:back" 
+                                    onclick={handleBackToMethods}
+                                    variant="border-filled">
+                                </lightning-button-icon>
+                            </div>
+                            <div class="slds-col slds-size_11-of-12">
+                                <h3 class="slds-text-heading_medium">PayPal Payment</h3>
+                            </div>
+                        </div>
+
+                        <div class="paypal-form slds-box slds-m-vertical_medium slds-text-align_center">
+                            <lightning-icon icon-name="utility:socialshare" size="large" variant="brand"></lightning-icon>
+                            <p class="slds-text-body_regular slds-p-vertical_medium">
+                                You'll be redirected to PayPal to complete your payment securely.
+                            </p>
+                            <p class="slds-text-body_small">
+                                Amount: {formattedAmount}
+                            </p>
+                        </div>
+
+                        <div class="slds-text-align_center">
+                            <lightning-button 
+                                label="Pay with PayPal" 
+                                variant="brand"
+                                onclick={handlePayPalPayment}
+                                disabled={isProcessing}>
+                            </lightning-button>
+                        </div>
+                    </div>
+                </template>
+            </template>
+
+            <!-- ACH Form -->
+            <template if:true={isACH}>
+                <template if:true={showPaymentForm}>
+                    <div class="payment-form">
+                        <div class="slds-grid slds-gutters_small slds-p-bottom_medium">
+                            <div class="slds-col slds-size_1-of-12">
+                                <lightning-button-icon 
+                                    icon-name="utility:back" 
+                                    onclick={handleBackToMethods}
+                                    variant="border-filled">
+                                </lightning-button-icon>
+                            </div>
+                            <div class="slds-col slds-size_11-of-12">
+                                <h3 class="slds-text-heading_medium">ACH Payment</h3>
+                            </div>
+                        </div>
+
+                        <div class="ach-form slds-box slds-m-vertical_medium">
+                            <lightning-input 
+                                label="Bank Routing Number" 
+                                type="text" 
+                                placeholder="9 digit routing number"
+                                class="slds-m-bottom_small"
+                                required>
+                            </lightning-input>
+                            <lightning-input 
+                                label="Account Number" 
+                                type="text" 
+                                placeholder="Account number"
+                                class="slds-m-bottom_small"
+                                required>
+                            </lightning-input>
+                            <lightning-input 
+                                label="Account Type" 
+                                type="text" 
+                                value="Checking"
+                                class="slds-m-bottom_small"
+                                readonly>
+                            </lightning-input>
+                        </div>
+
+                        <div class="slds-notify slds-notify_alert slds-theme_info slds-m-bottom_medium">
+                            <span class="slds-assistive-text">Info</span>
+                            <h2>ACH payments typically take 1-3 business days to process. You'll receive confirmation once the payment is complete.</h2>
+                        </div>
+
+                        <div class="slds-text-align_center">
+                            <lightning-button 
+                                label="Process ACH Payment" 
+                                variant="brand"
+                                onclick={handleACHPayment}
+                                disabled={isProcessing}>
+                            </lightning-button>
+                        </div>
+                    </div>
+                </template>
+            </template>
+
+            <!-- Processing Overlay -->
+            <template if:true={isProcessing}>
+                <div class="processing-overlay">
+                    <lightning-spinner alternative-text="Processing payment..." size="large"></lightning-spinner>
+                    <p class="slds-text-align_center slds-p-top_medium">Processing your payment...</p>
+                </div>
+            </template>
+
+        </div>
+    </lightning-card>
+</template>

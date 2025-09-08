@@ -1,0 +1,28 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "YachtRef1"
+      },
+      "Name": "Sea Breeze",
+      "Type": "Customer",
+      "Yacht_Length__c": 85,
+      "Engine_Type__c": "Diesel",
+      "Home_Port__c": "Miami Marina",
+      "Monthly_Budget__c": 25000
+    },
+    {
+      "attributes": {
+        "type": "Account",
+        "referenceId": "YachtRef2"
+      },
+      "Name": "Ocean Dream",
+      "Type": "Customer",
+      "Yacht_Length__c": 120,
+      "Engine_Type__c": "Diesel",
+      "Home_Port__c": "Fort Lauderdale",
+      "Monthly_Budget__c": 45000
+    }
+  ]
+}

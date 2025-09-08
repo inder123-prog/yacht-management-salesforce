@@ -1,43 +1,111 @@
 <template>
-    <lightning-card title="Yacht Management Dashboard" icon-name="custom:custom63">
-        <div class="slds-p-horizontal_medium">
-            <template if:true={isLoading}>
-                <lightning-spinner alternative-text="Loading dashboard..."></lightning-spinner>
-            </template>
-
-            <template if:false={isLoading}>
-                <div class="slds-grid slds-wrap slds-gutters_medium">
-                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
-                        <lightning-card>
-                            <div class="slds-p-medium slds-text-align_center">
-                                <lightning-icon icon-name="utility:currency" size="large"></lightning-icon>
-                                <div class="metric-value">${totalExpenses}</div>
-                                <div class="metric-label">Total Monthly Expenses</div>
-                            </div>
-                        </lightning-card>
-                    </div>
-                    
-                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
-                        <lightning-card>
-                            <div class="slds-p-medium slds-text-align_center">
-                                <lightning-icon icon-name="utility:wrench" size="large"></lightning-icon>
-                                <div class="metric-value">{pendingMaintenance}</div>
-                                <div class="metric-label">Pending Maintenance</div>
-                            </div>
-                        </lightning-card>
-                    </div>
-                    
-                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
-                        <lightning-card>
-                            <div class="slds-p-medium slds-text-align_center">
-                                <lightning-icon icon-name="custom:custom63" size="large"></lightning-icon>
-                                <div class="metric-value">{activeYachts}</div>
-                                <div class="metric-label">Active Yachts</div>
-                            </div>
-                        </lightning-card>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="slds-page-header">
+            <div class="slds-grid">
+                <div class="slds-col slds-has-flexi-truncate">
+                    <div class="slds-media slds-no-space slds-grow">
+                        <div class="slds-media__figure">
+                            <lightning-icon icon-name="utility:sailboat" size="medium"></lightning-icon>
+                        </div>
+                        <div class="slds-media__body">
+                            <h1 class="slds-page-header__title slds-truncate">Yacht Management Dashboard</h1>
+                            <p class="slds-text-body_small">Real-time overview of yacht operations and finances</p>
+                        </div>
                     </div>
                 </div>
-            </template>
+                <div class="slds-col slds-no-flex slds-grid slds-grid_align-end">
+                    <lightning-button 
+                        label="Refresh Data" 
+                        onclick={refreshData}
+                        variant="brand"
+                        icon-name="utility:refresh">
+                    </lightning-button>
+                </div>
+            </div>
         </div>
-    </lightning-card>
+
+        <!-- Key Metrics Grid -->
+        <div class="slds-grid slds-wrap slds-gutters_medium slds-p-vertical_medium">
+            <!-- Total Expenses -->
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                <lightning-card class="metric-card">
+                    <div class="slds-p-medium slds-text-align_center">
+                        <lightning-icon icon-name="utility:currency" size="large" variant="success"></lightning-icon>
+                        <div class="metric-value">${totalExpenses}</div>
+                        <div class="metric-label">Monthly Expenses</div>
+                        <div class="metric-trend slds-text-color_success">
+                            <lightning-icon icon-name="utility:arrowup" size="xx-small"></lightning-icon>
+                            +12% vs last month
+                        </div>
+                    </div>
+                </lightning-card>
+            </div>
+
+            <!-- Pending Maintenance -->
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                <lightning-card class="metric-card">
+                    <div class="slds-p-medium slds-text-align_center">
+                        <lightning-icon icon-name="utility:wrench" size="large" variant="warning"></lightning-icon>
+                        <div class="metric-value">{pendingMaintenance}</div>
+                        <div class="metric-label">Pending Maintenance</div>
+                    </div>
+                </lightning-card>
+            </div>
+
+            <!-- Active Yachts -->
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                <lightning-card class="metric-card">
+                    <div class="slds-p-medium slds-text-align_center">
+                        <lightning-icon icon-name="utility:sailboat" size="large" variant="info"></lightning-icon>
+                        <div class="metric-value">{activeYachts}</div>
+                        <div class="metric-label">Active Yachts</div>
+                    </div>
+                </lightning-card>
+            </div>
+
+            <!-- Fuel Efficiency -->
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                <lightning-card class="metric-card">
+                    <div class="slds-p-medium slds-text-align_center">
+                        <lightning-icon icon-name="utility:fuel" size="large" variant="brand"></lightning-icon>
+                        <div class="metric-value">{fuelEfficiency}</div>
+                        <div class="metric-label">L/Nautical Mile</div>
+                    </div>
+                </lightning-card>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <lightning-card title="Quick Actions" icon-name="utility:quick_text">
+            <div class="slds-p-horizontal_medium">
+                <div class="slds-grid slds-gutters_small">
+                    <div class="slds-col">
+                        <lightning-button 
+                            label="New Expense" 
+                            variant="brand"
+                            icon-name="utility:add"
+                            class="slds-m-bottom_small">
+                        </lightning-button>
+                    </div>
+                    <div class="slds-col">
+                        <lightning-button 
+                            label="Schedule Maintenance" 
+                            variant="neutral"
+                            icon-name="utility:event"
+                            class="slds-m-bottom_small">
+                        </lightning-button>
+                    </div>
+                    <div class="slds-col">
+                        <lightning-button 
+                            label="View Reports" 
+                            variant="neutral"
+                            icon-name="utility:chart"
+                            class="slds-m-bottom_small">
+                        </lightning-button>
+                    </div>
+                </div>
+            </div>
+        </lightning-card>
+    </div>
 </template>

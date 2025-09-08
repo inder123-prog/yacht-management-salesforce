@@ -6,14 +6,15 @@
     "test": "npm run test:unit",
     "test:unit": "sfdx-lwc-jest",
     "deploy:dev": "./scripts/deploy.sh dev",
-    "deploy:staging": "./scripts/deploy.sh staging",
+    "deploy:staging": "./scripts/deploy.sh staging", 
     "deploy:prod": "./scripts/deploy.sh prod"
   },
   "devDependencies": {
-    "@lwc/eslint-plugin-lwc": "^1.1.2",
-    "@salesforce/eslint-config-lwc": "^3.2.3",
+    "@lwc/eslint-plugin-lwc": "^2.0.0",
+    "@salesforce/eslint-config-lwc": "^3.7.2",
     "@salesforce/sfdx-lwc-jest": "^1.1.0",
-    "eslint": "^8.11.0",
-    "prettier": "^2.6.0"
+    "eslint": "^8.57.0",
+    "prettier": "^3.0.0",
+    "prettier-plugin-apex": "^2.0.1"
   }
 }

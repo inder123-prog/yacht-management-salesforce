@@ -1,0 +1,15 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "Contact",
+        "referenceId": "CrewRef1"
+      },
+      "FirstName": "John",
+      "LastName": "Smith",
+      "Email": "j.smith@seabreeze.com",
+      "Position__c": "Captain",
+      "AccountId": "@YachtRef1"
+    }
+  ]
+}

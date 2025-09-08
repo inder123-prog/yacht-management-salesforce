@@ -1,0 +1,43 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "Opportunity",
+                "referenceId": "ExpenseRef1"
+            },
+            "Name": "Fuel - September 2024",
+            "Amount": 2800,
+            "StageName": "Closed Won",
+            "CloseDate": "2024-09-15",
+            "Expense_Category__c": "Fuel",
+            "Vendor_Name__c": "Marine Fuel Co",
+            "AccountId": "@YachtRef1"
+        },
+        {
+            "attributes": {
+                "type": "Opportunity",
+                "referenceId": "ExpenseRef2"
+            },
+            "Name": "Hull Cleaning & Inspection",
+            "Amount": 3200,
+            "StageName": "Closed Won",
+            "CloseDate": "2024-09-10",
+            "Expense_Category__c": "Maintenance",
+            "Vendor_Name__c": "Neptune Services",
+            "AccountId": "@YachtRef1"
+        },
+        {
+            "attributes": {
+                "type": "Opportunity",
+                "referenceId": "ExpenseRef3"
+            },
+            "Name": "Docking Fees - September",
+            "Amount": 4500,
+            "StageName": "Closed Won",
+            "CloseDate": "2024-09-01",
+            "Expense_Category__c": "Docking",
+            "Vendor_Name__c": "Fort Lauderdale Marina",
+            "AccountId": "@YachtRef2"
+        }
+    ]
+}

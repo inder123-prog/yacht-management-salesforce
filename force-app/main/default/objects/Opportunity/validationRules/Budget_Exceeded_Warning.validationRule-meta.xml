@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Budget_Exceeded_Warning</fullName>
+    <active>true</active>
+    <description>Warns when monthly expenses exceed yacht budget</description>
+    <errorConditionFormula>AND(
+        Account.Monthly_Budget__c != null,
+        Amount > Account.Monthly_Budget__c * 0.8,
+        ISPICKVAL(Expense_Category__c, "Fuel") || 
+        ISPICKVAL(Expense_Category__c, "Maintenance") ||
+        ISPICKVAL(Expense_Category__c, "Operating")
+    )</errorConditionFormula>
+    <errorDisplayField>Amount</errorDisplayField>
+    <errorMessage>Warning: This expense will exceed 80% of the monthly budget for this yacht. Current budget: {!Account.Monthly_Budget__c}. Please review before proceeding.</errorMessage>
+</ValidationRule>

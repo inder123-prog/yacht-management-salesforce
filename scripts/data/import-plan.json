@@ -1,0 +1,20 @@
+[
+    {
+        "sobject": "Account",
+        "saveRefs": true,
+        "resolveRefs": false,
+        "files": ["scripts/data/sample-yachts.json"]
+    },
+    {
+        "sobject": "Contact", 
+        "saveRefs": false,
+        "resolveRefs": true,
+        "files": ["scripts/data/sample-crew.json"]
+    },
+    {
+        "sobject": "Opportunity",
+        "saveRefs": false,
+        "resolveRefs": true,
+        "files": ["scripts/data/sample-expenses.json"]
+    }
+]
